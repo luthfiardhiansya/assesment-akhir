@@ -131,17 +131,16 @@
                       </g>
                     </svg>
                   </span>
-                  <span class="app-brand-text demo text-body fw-bolder">Sneat</span>
                 </a>
               </div>
               <!-- /Logo -->
-              <h4 class="mb-2">Welcome to Sneat! 👋</h4>
+              <h4 class="mb-2">Welcome To Toko Elektronik🙌</h4>
               <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
               <form class="mb-3" action="{{ route('login') }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                  <label for="email" class="form-label">Email or Username</label>
+                  <label for="email" class="form-label">Email</label>
                   <input
                     type="text"
                     class="form-control @error('email') is-invalid @enderror"

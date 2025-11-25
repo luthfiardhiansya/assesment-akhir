@@ -26,5 +26,7 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']],function(){
     Route::resource('supplier', App\Http\Controllers\SupplierController::class);
     Route::resource('transaksi', App\Http\Controllers\TransaksiController::class);
     Route::resource('pembelian', App\Http\Controllers\PembelianController::class);
+
+    
     
 Auth::routes();

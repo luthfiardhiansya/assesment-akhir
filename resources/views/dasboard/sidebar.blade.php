@@ -68,17 +68,43 @@
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active">
-              <a href="home" class="menu-link">
+            <li class="menu-item {{ request()->is('home') ? 'active' : '' }}">
+              <a href="{{ url('home') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
             </li>
 
+            <li class="menu-item {{ request()->is('supplier') ? 'active' : '' }}">
+              <a href="{{ url('supplier') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Supplier">Supplier</div>
+              </a>
+            </li>
+
             <li class="menu-item">
-              <a href="kategori" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-layout"></i>
-                <div data-i18n="Layouts">Layouts</div>
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <div data-i18n="Barang">Barang</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item {{ request()->is('kategori') ? 'active' : '' }}">
+                  <a href="{{ url('kategori') }}" class="menu-link">
+                    <div data-i18n="Kategori">Kategori</div>
+                  </a>
+                </li>
+                <li class="menu-item {{ request()->is('barang') ? 'active' : '' }}">
+                  <a href="{{ url('barang') }}" class="menu-link">
+                    <div data-i18n="Kompenen">Kompenen</div>
+                  </a>
+                </li>
+              </ul>
+            </li>      
+            
+            <li class="menu-item {{ request()->is('transaksi') ? 'active' : '' }}">
+              <a href="{{ url('transaksi') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-tickets"></i>
+                <div data-i18n="Transaksi">Transaksi</div>
               </a>
             </li>
 
@@ -89,7 +115,7 @@
             </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <i class="menu-icon tf-icons bx bx-user-circle"></i>
                 <div data-i18n="Account Settings">Account Settings</div>
               </a>
               <ul class="menu-sub">
