@@ -21,12 +21,11 @@ Route::group(['prefix'=>'admin', 'middleware'=>['auth']],function(){
     });
 });
 
+    Route::get('/transaksi/search', [App\Http\Controllers\TransaksiController::class, 'search'])->name('transaksi.search');
     Route::resource('kategori', App\Http\Controllers\KategoriController::class);
     Route::resource('barang', App\Http\Controllers\BarangController::class);
     Route::resource('supplier', App\Http\Controllers\SupplierController::class);
     Route::resource('transaksi', App\Http\Controllers\TransaksiController::class);
     Route::resource('pembelian', App\Http\Controllers\PembelianController::class);
 
-    
-    
 Auth::routes();

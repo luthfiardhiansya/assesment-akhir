@@ -100,13 +100,27 @@
                 </li>
               </ul>
             </li>      
-            
-            <li class="menu-item {{ request()->is('transaksi') ? 'active' : '' }}">
-              <a href="{{ url('transaksi') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-tickets"></i>
-                <div data-i18n="Transaksi">Transaksi</div>
+
+            <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-dock-top"></i>
+                <div data-i18n="Pesanan">Pesanan</div>
               </a>
+              <ul class="menu-sub">
+                <li class="menu-item {{ request()->is('transaksi') ? 'active' : '' }}">
+                  <a href="{{ url('transaksi') }}" class="menu-link">
+                    <div data-i18n="Transaksi">Transaksi</div>
+                  </a>
+                </li>
+                <li class="menu-item {{ request()->is('pembelian') ? 'active' : '' }}">
+                  <a href="{{ url('pembelian') }}" class="menu-link">
+                    <div data-i18n="Pembelian">Pembelian</div>
+                  </a>
+                </li>
+              </ul>
             </li>
+            
+            
 
             <!-- Layouts -->
 

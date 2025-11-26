@@ -22,6 +22,7 @@ class PembelianController extends Controller
 
         return view('pembelian.index', compact('pembelians', 'search'));
     }
+    
 
     public function create()
     {
