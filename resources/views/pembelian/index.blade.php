@@ -45,7 +45,7 @@
                         <tr>
                             <td>{{ $loop->iteration + ($pembelians->currentPage() - 1) * $pembelians->perPage() }}</td>
                             <td>{{ $pembelian->transaksi->kode_transaksi ?? '-' }}</td>
-                            <td>{{ $pembelian->transaksi->supplier->nama ?? '-' }}</td>
+                            <td>{{ $pembelian->transaksi->supplier->nama_supplier ?? '-' }}</td>
                             <td>{{ \Carbon\Carbon::parse($pembelian->tanggal_bayar)->format('d M Y') }}</td>
                             <td>
                                 <span class="badge bg-{{ $pembelian->metode_pembayaran == 'cash' ? 'success' : ($pembelian->metode_pembayaran == 'credit' ? 'warning' : 'info') }}">

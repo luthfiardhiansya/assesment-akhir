@@ -75,7 +75,7 @@
             <table class="table table-bordered">
                 <tr>
                     <th>Nama Supplier</th>
-                    <td>{{ $pembelian->transaksi->supplier->nama }}</td>
+                    <td>{{ $pembelian->transaksi->supplier->nama_supplier }}</td>
                 </tr>
                 <tr>
                     <th>Alamat</th>

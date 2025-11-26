@@ -27,7 +27,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Login Basic - Pages | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Login Basic - Toko Elektronik</title>
 
     <meta name="description" content="" />
 
@@ -227,3 +227,176 @@
     <script async defer src="https://buttons.github.io/buttons.js')}}"></script>
   </body>
 </html>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at 20% 20%, #0d1117, #000);
+    color: #fff;
+    overflow-x: hidden;
+    position: relative;
+}
+
+#bg-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: transparent;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+}
+
+.card-header {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    border-top-left-radius: 16px !important;
+    border-top-right-radius: 16px !important;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+}
+
+.btn {
+    border-radius: 10px;
+    transition: all 0.25s ease;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+.btn::before {
+    content: '';
+    position: absolute;
+    left: -50%;
+    top: 0;
+    width: 0;
+    height: 100%;
+    background: rgba(255,255,255,0.25);
+    transform: skewX(-25deg);
+    transition: 0.5s;
+}
+.btn:hover::before {
+    width: 200%;
+}
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
+}
+
+.table {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: #e0e0e0;
+}
+.table thead {
+    background: rgba(0, 255, 255, 0.15);
+    color: #00eaff;
+    text-transform: uppercase;
+}
+.table-hover tbody tr:hover {
+    background: rgba(0, 255, 255, 0.08);
+    transform: scale(1.005);
+    transition: all 0.2s;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #00c6ff, #0072ff);
+    border-radius: 10px;
+}
+
+.page-link {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: #00eaff;
+    border-radius: 8px;
+}
+.page-item.active .page-link {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: white;
+}
+.page-link:hover {
+    background: #00eaff;
+    color: black;
+}
+</style>
+
+<canvas id="bg-particles"></canvas>
+
+<script>
+const canvas = document.getElementById("bg-particles");
+const ctx = canvas.getContext("2d");
+let particlesArray;
+
+function initParticles() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    particlesArray = [];
+    const num = 80;
+
+    for (let i = 0; i < num; i++) {
+        particlesArray.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 3,
+            speedX: (Math.random() - 0.5) * 1,
+            speedY: (Math.random() - 0.5) * 1,
+        });
+    }
+}
+
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particlesArray.forEach(p => {
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 255, 255, ${0.6 + Math.random() * 0.4})`;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = "#00ffff";
+        ctx.fill();
+    });
+
+    for (let a = 0; a < particlesArray.length; a++) {
+        for (let b = a; b < particlesArray.length; b++) {
+            const dx = particlesArray[a].x - particlesArray[b].x;
+            const dy = particlesArray[a].y - particlesArray[b].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 120) {
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(0,255,255,${1 - distance / 120})`;
+                ctx.lineWidth = 0.5;
+                ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                ctx.stroke();
+            }
+        }
+    }
+
+    requestAnimationFrame(animateParticles);
+}
+
+window.addEventListener("resize", initParticles);
+initParticles();
+animateParticles();
+</script>

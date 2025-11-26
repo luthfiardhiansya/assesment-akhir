@@ -53,8 +53,8 @@ class TransaksiController extends Controller
                 'sub_total' => $subTotal,
             ];
 
-            // kurangi stok
-            $barang->stok -= $jumlah;
+            // menambah stok
+            $barang->stok += $jumlah;
             $barang->save();
 
             $totalHarga += $subTotal;
@@ -172,7 +172,15 @@ class TransaksiController extends Controller
             ->where('kode_transaksi', 'like', "%$query%")
             ->get();
 
-        return response()->json($transaksi);
+        return response()->json($transaksi->map(function ($t) {
+        return [
+            'id'             => $t->id,
+            'kode_transaksi' => $t->kode_transaksi,
+            'supplier_nama'  => optional($t->supplier)->nama_supplier,
+            'total_harga'    => $t->total_harga,
+        ];
+    })
+);
     }
 
 }

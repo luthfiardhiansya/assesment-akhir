@@ -23,8 +23,11 @@ class Transaksi extends Model
     }
     public function barangs()
     {
-    return $this->belongsToMany(Transaksi::class, 'detail_transaksi','id_transaksi', 'id_barang')
+    return $this->belongsToMany(Barang::class, 'detail_transaksi','id_transaksi', 'id_barang')
         ->withPivot('jumlah', 'sub_total')
         ->withTimestamps();
+    }
+    function pembelian() {
+        return $this->hasOne(Pembelian::class, 'id_transaksi');
     }
 }
