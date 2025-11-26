@@ -52,6 +52,7 @@
                 <thead class="table-secondary">
                     <tr>
                         <th>No</th>
+                        <th>Kategori</th>
                         <th>Nama Kompenen</th>
                         <th>Harga</th>
                         <th>Jumlah</th>
@@ -62,6 +63,7 @@
                     @foreach($pembelian->transaksi->barangs as $index => $barang)
                     <tr>
                         <td>{{ $index + 1 }}</td>
+                        <td>{{ $barang->kategori->nama_kategori }}</td>
                         <td>{{ $barang->nama_barang }}</td>
                         <td>Rp {{ number_format($barang->harga, 0, ',', '.') }}</td>
                         <td>{{ $barang->pivot->jumlah }}</td>

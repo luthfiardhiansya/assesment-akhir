@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
 use App\Models\Pembelian;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
@@ -22,7 +23,6 @@ class PembelianController extends Controller
 
         return view('pembelian.index', compact('pembelians', 'search'));
     }
-    
 
     public function create()
     {
@@ -32,22 +32,31 @@ class PembelianController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_transaksi'      => 'required|exists:transaksis,id',
-            'tanggal_bayar'     => 'required|date',
+            'id_transaksi'     => 'required|exists:transaksis,id',
+            'tanggal_bayar'    => 'required|date',
             'metode_pembelian' => 'required|in:cash,credit,debit',
-            'jumlah_bayar'      => 'required|integer|min:0',
+            'jumlah_bayar'     => 'required|integer|min:0',
         ]);
 
-        $transaksi = Transaksi::findOrFail($request->id_transaksi);
+        $transaksi = Transaksi::with('barangs')->findOrFail($request->id_transaksi);
+
+        foreach ($transaksi->barangs as $brg) {
+            $barang = Barang::find($brg->id);
+
+            if ($barang) {
+                $barang->stok += $brg->pivot->jumlah;
+                $barang->save();
+            }
+        }
 
         $kembalian = $request->jumlah_bayar - $transaksi->total_harga;
 
         Pembelian::create([
-            'id_transaksi'      => $transaksi->id,
-            'tanggal_bayar'     => $request->tanggal_bayar,
+            'id_transaksi'     => $transaksi->id,
+            'tanggal_bayar'    => $request->tanggal_bayar,
             'metode_pembelian' => $request->metode_pembelian,
-            'jumlah_bayar'      => $request->jumlah_bayar,
-            'kembalian'         => max($kembalian, 0),
+            'jumlah_bayar'     => $request->jumlah_bayar,
+            'kembalian'        => max($kembalian, 0),
         ]);
 
         return redirect()->route('pembelian.index');
@@ -68,23 +77,24 @@ class PembelianController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'id_transaksi'      => 'required|exists:transaksis,id',
-            'tanggal_bayar'     => 'required|date',
+            'id_transaksi'     => 'required|exists:transaksis,id',
+            'tanggal_bayar'    => 'required|date',
             'metode_pembelian' => 'required|in:cash,credit,debit',
-            'jumlah_bayar'      => 'required|integer|min:0',
+            'jumlah_bayar'     => 'required|integer|min:0',
         ]);
 
         $pembelian = Pembelian::findOrFail($id);
-        $transaksi  = Transaksi::findOrFail($request->id_transaksi);
+        $transaksi = Transaksi::with('barangs')->findOrFail($request->id_transaksi);
+
 
         $kembalian = $request->jumlah_bayar - $transaksi->total_harga;
 
         $pembelian->update([
-            'id_transaksi'      => $transaksi->id,
-            'tanggal_bayar'     => $request->tanggal_bayar,
+            'id_transaksi'     => $transaksi->id,
+            'tanggal_bayar'    => $request->tanggal_bayar,
             'metode_pembelian' => $request->metode_pembelian,
-            'jumlah_bayar'      => $request->jumlah_bayar,
-            'kembalian'         => max($kembalian, 0),
+            'jumlah_bayar'     => $request->jumlah_bayar,
+            'kembalian'        => max($kembalian, 0),
         ]);
 
         return redirect()->route('pembelian.index');
@@ -93,6 +103,20 @@ class PembelianController extends Controller
     public function destroy($id)
     {
         $pembelian = Pembelian::findOrFail($id);
+
+        $transaksi = Transaksi::with('barangs')->find($pembelian->id_transaksi);
+
+        if ($transaksi) {
+            foreach ($transaksi->barangs as $brg) {
+                $barang = Barang::find($brg->id);
+
+                if ($barang) {
+                    $barang->stok -= $brg->pivot->jumlah;
+                    $barang->save();
+                }
+            }
+        }
+
         $pembelian->delete();
 
         return redirect()->route('pembelian.index');

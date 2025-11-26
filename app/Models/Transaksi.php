@@ -17,7 +17,6 @@ class Transaksi extends Model
         'total_harga'
     ];
 
-    // Relasi ke pelanggan
     function supplier() {
         return $this->belongsTo(Supplier::class, 'id_supplier');
     }

@@ -20,6 +20,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Kategori</th>
                                     <th>Nama Kompenen</th>
                                     <th>Harga</th>
                                     <th>Stok</th>
@@ -32,6 +33,7 @@
                                 @forelse ($barang as $data)
                                 <tr>
                                     <td>{{ $no++ }}</td>
+                                    <td>{{ $data->kategori->nama_kategori }}</td>
                                     <td>{{ $data->nama_barang }}</td>
                                     <td>{!! $data->harga !!}</td>
                                     <td>{{ $data->stok}}</td>

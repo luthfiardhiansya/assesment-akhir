@@ -10,7 +10,7 @@ class BarangController extends Controller
 {
      public function index()
     {
-        $barang = Barang::all();  
+        $barang = Barang::with('kategori')->get();
         return view('barang.index', compact('barang'));
     }
 

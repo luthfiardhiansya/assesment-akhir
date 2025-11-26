@@ -17,7 +17,7 @@ class TransaksiController extends Controller
     public function create()
     {
         $supplier = Supplier::all();
-        $barang    = Barang::all();
+        $barang  = Barang::all();
         return view('transaksi.create', compact('supplier', 'barang'));
     }
 
@@ -31,8 +31,9 @@ class TransaksiController extends Controller
             'jumlah.*'     => 'integer|min:1',
         ]);
 
-        $kode                      = 'TRX-' . strtoupper(uniqid());
-        $transaksi                 = new Transaksi();
+        $kode = 'TRX-' . strtoupper(uniqid());
+
+        $transaksi = new Transaksi();
         $transaksi->kode_transaksi = $kode;
         $transaksi->id_supplier    = $request->id_supplier;
         $transaksi->tanggal        = now();
@@ -47,23 +48,16 @@ class TransaksiController extends Controller
             $jumlah   = $request->jumlah[$index];
             $subTotal = $barang->harga * $jumlah;
 
-            // isi array untuk attach pivot
             $barangPivot[$barangId] = [
                 'jumlah'    => $jumlah,
                 'sub_total' => $subTotal,
             ];
 
-            // menambah stok
-            $barang->stok += $jumlah;
-            $barang->save();
-
             $totalHarga += $subTotal;
         }
 
-        // simpan relasi produk ke transaksi (many-to-many)
         $transaksi->barangs()->attach($barangPivot);
 
-        // update total harga transaksi
         $transaksi->update(['total_harga' => $totalHarga]);
 
         return redirect()->route('transaksi.index');
@@ -96,19 +90,8 @@ class TransaksiController extends Controller
 
         $transaksi = Transaksi::with('barangs')->findOrFail($id);
 
-        // Kembalikan stok produk lama
-        foreach ($transaksi->barangs as $oldBarang) {
-            $p = Barang::find($oldBarang->id);
-            if ($p) {
-                $p->stok += $oldBarang->pivot->jumlah;
-                $p->save();
-            }
-        }
-
-        // kosongkan pivot lama
         $transaksi->barangs()->detach();
 
-        // update data transaksi
         $transaksi->id_supplier  = $request->id_supplier;
         $transaksi->tanggal      = now();
         $transaksi->total_harga  = 0;
@@ -127,17 +110,12 @@ class TransaksiController extends Controller
                 'sub_total' => $subTotal,
             ];
 
-            // kurangi stok baru
-            $barang->stok -= $jumlah;
-            $barang->save();
 
             $totalHarga += $subTotal;
         }
 
-        // simpan relasi pivot baru
         $transaksi->barangs()->attach($barangPivot);
 
-        // update total harga
         $transaksi->update(['total_harga' => $totalHarga]);
 
         return redirect()->route('transaksi.index');
@@ -147,19 +125,8 @@ class TransaksiController extends Controller
     {
         $transaksi = Transaksi::with('barangs')->findOrFail($id);
 
-        // Kembalikan stok produk
-        foreach ($transaksi->barangs as $barang) {
-            $p = Barang::find($barang->id);
-            if ($p) {
-                $p->stok += $barang->pivot->jumlah;
-                $p->save();
-            }
-        }
-
-        // Hapus relasi pivot
         $transaksi->barangs()->detach();
 
-        // Hapus transaksi utama
         $transaksi->delete();
 
         return redirect()->route('transaksi.index');
@@ -172,15 +139,15 @@ class TransaksiController extends Controller
             ->where('kode_transaksi', 'like', "%$query%")
             ->get();
 
-        return response()->json($transaksi->map(function ($t) {
-        return [
-            'id'             => $t->id,
-            'kode_transaksi' => $t->kode_transaksi,
-            'supplier_nama'  => optional($t->supplier)->nama_supplier,
-            'total_harga'    => $t->total_harga,
-        ];
-    })
-);
+        return response()->json(
+            $transaksi->map(function ($t) {
+                return [
+                    'id'             => $t->id,
+                    'kode_transaksi' => $t->kode_transaksi,
+                    'supplier_nama'  => optional($t->supplier)->nama_supplier,
+                    'total_harga'    => $t->total_harga,
+                ];
+            })
+        );
     }
-
 }

@@ -36,6 +36,7 @@
                 <thead class="table-light">
                     <tr>
                         <th>No</th>
+                        <th>Kategori</th>
                         <th>Nama Kompenen</th>
                         <th>Harga Satuan</th>
                         <th>Jumlah</th>
@@ -46,6 +47,7 @@
                     @foreach($transaksi->barangs as $brg)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
+                        <td>{{ $brg->kategori->nama_kategori }}</td>
                         <td>{{ $brg->nama_barang }}</td>
                         <td>Rp {{ number_format($brg->harga, 0, ',', '.') }}</td>
                         <td>{{ $brg->pivot->jumlah }}</td>
@@ -56,7 +58,7 @@
 
                 <tfoot class="table-secondary">
                     <tr>
-                        <th colspan="4" class="text-end">Total</th>
+                        <th colspan="5" class="text-end">Total</th>
                         <th>Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}</th>
                     </tr>
                 </tfoot>
