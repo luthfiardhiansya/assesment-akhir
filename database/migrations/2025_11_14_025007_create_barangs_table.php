@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('barangs', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_barang');
+            $table->string('nama_barang')->unique();
             $table->integer('stok');
             $table->integer('harga');
             $table->foreignId('id_kategori')->constrained('kategoris');

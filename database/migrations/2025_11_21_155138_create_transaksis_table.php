@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
             $table->string('kode_transaksi')->unique();
-            $table->foreignId('id_supplier')->constrained('suppliers');
+            $table->foreignId('id_supplier')->constrained('suppliers')->onDelete('cascade');
             $table->date('tanggal');
             $table->integer('total_harga');
             $table->timestamps();
