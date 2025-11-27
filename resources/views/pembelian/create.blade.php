@@ -100,7 +100,7 @@
                     return;
                 }
 
-                fetch(`transaksi/search?query=${query}`)
+                fetch(`/transaks/search?query=${query}`)
                     .then(res => res.json())
                     .then(data => {
                         searchResult.innerHTML = '';
