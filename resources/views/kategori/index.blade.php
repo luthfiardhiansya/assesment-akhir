@@ -19,7 +19,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th class="text-center">Nama Kategori</th>
+                                    <th>Nama Kategori</th>
                                     <th>Aksi </th>
                                 </tr>
                             </thead>
@@ -28,7 +28,7 @@
                                 @forelse ($kategori as $data)
                                 <tr>
                                     <td>{{ $no++ }}</td>
-                                    <td class="text-center">{{ $data->nama_kategori }}</td>
+                                    <td>{{ $data->nama_kategori }}</td>
                                     <td>
                                         <form action="{{ route('kategori.destroy', $data->id) }}" method="POST">
                                             @csrf

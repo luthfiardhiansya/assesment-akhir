@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Barang; // ← tambahkan ini
+use App\Models\Barang;
 
 class HomeController extends Controller
 {
@@ -14,7 +14,7 @@ class HomeController extends Controller
 
     public function index()
 {
-    $barang = \App\Models\Barang::with('kategori')->get();
+    $barang = Barang::with('kategori')->get();
 
     return view('home', compact('barang'));
         }
